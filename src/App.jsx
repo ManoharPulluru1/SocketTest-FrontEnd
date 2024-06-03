@@ -21,7 +21,16 @@ const App = () => {
     return () => {
       socket.off("users");
     };
-  }, [users]);
+  }, []);
+
+  useEffect(() => {
+    if (userLocation) {
+      const userIndex = users.findIndex(user => user.username === username);
+      if (userIndex !== -1) {
+        socket.emit("updateUserLocation", userIndex, userLocation[1], userLocation[0]);
+      }
+    }
+  }, [userLocation, username, users]);
 
   const handleInputChange = (e) => {
     setUsername(e.target.value);
@@ -29,13 +38,13 @@ const App = () => {
 
   const handleReset = () => {
     socket.emit("resetUsers");
-  }
+  };
 
   const handleButtonClick = () => {
     setIsUserAdded(true);
     if (userLocation) {
       if (username.trim()) {
-        socket.emit("addUser", { username, lat: userLocation[1], lng: userLocation[0]});
+        socket.emit("addUser", { username, lat: userLocation[1], lng: userLocation[0] });
         setUsername("");
       }
     }
@@ -58,11 +67,7 @@ const App = () => {
             <h2>Users</h2>
             <ul>
               {users.map((user) => (
-                <>
-                  <User user={user} userLocation={
-                    userLocation ? userLocation : null
-                  } />
-                </>
+                <User key={user.index} user={user} userLocation={userLocation ? userLocation : null} />
               ))}
             </ul>
           </>
@@ -71,20 +76,17 @@ const App = () => {
       <div className="userCard">
         {userLocation ? (
           <div className="userCard">
-            {
-              <div>
-                <h2>User Location</h2>
-                <p>Latitude: {userLocation[1]}</p>
-                <p>Longitude: {userLocation[0]}</p>
-                <button onClick={handleReset}>Reset Users</button>
-              </div>
-            }
+            <div>
+              <h2>User Location</h2>
+              <p>Latitude: {userLocation[1]}</p>
+              <p>Longitude: {userLocation[0]}</p>
+              <button onClick={handleReset}>Reset Users</button>
+            </div>
           </div>
         ) : (
           <></>
         )}
       </div>
-
 
       <MapBoxV1 setUserLocation={setUserLocation} users={users} />
     </div>

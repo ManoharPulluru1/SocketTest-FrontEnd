@@ -1,47 +1,84 @@
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+import React, { useState, useEffect } from "react";
+import io from "socket.io-client";
+import User from "./User";
+import MapBoxV1 from "./MapBoxV1";
+import "./App.css";
 
-const socket = io('https://sockettest-1.onrender.com'); // Adjust the URL if your server is hosted elsewhere
+const socket = io("http://localhost:4000"); // Adjust the URL if your server is running elsewhere
 
 const App = () => {
-  const [notification, setNotification] = useState(null);
-  const [inputValue, setInputValue] = useState('');
+  const [username, setUsername] = useState("");
+  const [users, setUsers] = useState([]);
+  const [isUserAdded, setIsUserAdded] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
-    socket.on('notification', (data) => {
-      setNotification(data);
+    socket.on("users", (data) => {
+      setUsers(data);
     });
 
-    // Cleanup the effect when the component is unmounted
     return () => {
-      socket.off('notification');
+      socket.off("users");
     };
-  }, []);
+  }, [users]);
 
-  const sendMessage = () => {
-    if (inputValue.trim()) {
-      socket.emit('newMessage', inputValue);
-      setInputValue(''); // Clear the input field after sending the message
+  const handleInputChange = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handleButtonClick = () => {
+    setIsUserAdded(true);
+    if (username.trim()) {
+      socket.emit("addUser", { username });
+      setUsername("");
     }
   };
 
   return (
-    <div>
-      <h1>Notifications</h1>
-      {notification && (
-        <p>
-          {notification.dateTime}: {notification.message}
-        </p>
-      )}
-      <div>
-        <input 
-          type="text" 
-          value={inputValue} 
-          onChange={(e) => setInputValue(e.target.value)} 
-          placeholder="Type a message"
-        />
-        <button onClick={sendMessage}>Send</button>
+    <div className="AppMain">
+      <div className="functionalities">
+        {isUserAdded ? (
+          <></>
+        ) : (
+          <>
+            <input type="text" value={username} onChange={handleInputChange} placeholder="Enter username" />
+            <button onClick={handleButtonClick}>Add User</button>
+          </>
+        )}
+
+        {users.length > 0 && (
+          <>
+            <h2>Users</h2>
+            <ul>
+              {users.map((user) => (
+                <>
+                  <User user={user} />
+                </>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
+      <div className="userCard">
+
+        {
+          userLocation ? <div className="userCard">
+            {
+              // console.log(userLocation, "userLocation")
+              <div>
+
+                <h2>User Location</h2>
+                <p>Latitude: {userLocation[1]}</p>
+                <p>Longitude: {userLocation[0]}</p>
+              </div>
+            }
+          </div> : <>
+          
+          </>
+        }
+      </div>
+
+      <MapBoxV1 setUserLocation={setUserLocation} />
     </div>
   );
 };

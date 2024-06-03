@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@turf/turf": "^6.5.0",
+    "mapbox-gl": "^3.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "socket.io-client": "^4.7.5"

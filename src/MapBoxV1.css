@@ -1,0 +1,13 @@
+.blinking-marker {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    animation: blinker 1.5s linear infinite;
+  }
+  
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
+  

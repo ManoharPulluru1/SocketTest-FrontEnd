@@ -3,8 +3,9 @@ import io from "socket.io-client";
 import User from "./User";
 import MapBoxV1 from "./MapBoxV1";
 import "./App.css";
+import { port } from "./port";
 
-const socket = io("http://localhost:4000"); // Adjust the URL if your server is running elsewhere
+const socket = io(port); // Adjust the URL if your server is running elsewhere
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -26,11 +27,17 @@ const App = () => {
     setUsername(e.target.value);
   };
 
+  const handleReset = () => {
+    socket.emit("resetUsers");
+  }
+
   const handleButtonClick = () => {
     setIsUserAdded(true);
-    if (username.trim()) {
-      socket.emit("addUser", { username });
-      setUsername("");
+    if (userLocation) {
+      if (username.trim()) {
+        socket.emit("addUser", { username, lat: userLocation[1], lng: userLocation[0]});
+        setUsername("");
+      }
     }
   };
 
@@ -52,7 +59,9 @@ const App = () => {
             <ul>
               {users.map((user) => (
                 <>
-                  <User user={user} />
+                  <User user={user} userLocation={
+                    userLocation ? userLocation : null
+                  } />
                 </>
               ))}
             </ul>
@@ -60,25 +69,24 @@ const App = () => {
         )}
       </div>
       <div className="userCard">
-
-        {
-          userLocation ? <div className="userCard">
+        {userLocation ? (
+          <div className="userCard">
             {
-              // console.log(userLocation, "userLocation")
               <div>
-
                 <h2>User Location</h2>
                 <p>Latitude: {userLocation[1]}</p>
                 <p>Longitude: {userLocation[0]}</p>
+                <button onClick={handleReset}>Reset Users</button>
               </div>
             }
-          </div> : <>
-          
-          </>
-        }
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
 
-      <MapBoxV1 setUserLocation={setUserLocation} />
+
+      <MapBoxV1 setUserLocation={setUserLocation} users={users} />
     </div>
   );
 };

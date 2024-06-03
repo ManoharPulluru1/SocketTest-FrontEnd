@@ -1,12 +1,13 @@
 import { useState } from "react";
 import React from "react";
 import io from "socket.io-client";
+import { port } from "./port";
 
-const socket = io("http://localhost:4000"); // Ensure socket is not reinitialized
+const socket = io(port); 
 
-const User = ({ user }) => {
-  const { name, message, index } = user;
-  const [updatedMessage, setUpdatedMessage] = useState(message);
+const User = ({ user, useLocation }) => {
+  const { name, index, lat, lng } = user;
+  const [updatedMessage, setUpdatedMessage] = useState("");
   const [newMessage, setNewMessage] = useState("");
 
   const triggerIpChange = (e) => {
@@ -23,13 +24,7 @@ const User = ({ user }) => {
 
   return (
     <div>
-      {name} : {message} : {index}
-      <input
-        type="text"
-        value={newMessage}
-        onChange={triggerIpChange}
-      />
-      <button onClick={triggerUpdate}>Update</button>
+      {name} : {index} : {lat} : {lng} 
     </div>
   );
 };

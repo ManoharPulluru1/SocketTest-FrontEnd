@@ -10,6 +10,7 @@
   width: 100vw;
   /* background-color: white; */
   position: relative;
+  overflow: hidden;
 }
 
 .AddUserDiv {
@@ -64,7 +65,9 @@
   width: 100%;
   background-color: white;  
   /* z-index: 100; */
+  z-index: 1;
   color: rgb(0, 0, 0);
   display: flex;
   justify-content: right;
+  padding: 10px;
 }

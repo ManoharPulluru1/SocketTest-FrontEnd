@@ -10,12 +10,6 @@ mapboxgl.accessToken = "pk.eyJ1IjoibWFub2hhcnB1bGx1cnUiLCJhIjoiY2xyeHB2cWl0MWFkc
 const MapBoxV1 = ({ setUserLocation, users }) => {
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
-  // const [userLocation, setUserLocation] = useState(null);
-  // const [users, setUsers] = useState([
-  //   { name: "Kale", lat: 17.4467, lng: 78.3498 },
-  //   { name: "Alen John", lat: 17.5469, lng: 78.3491 },
-  //   { name: "Joy", lat: 17.4469, lng: 78.1491 },
-  // ]);
 
   // Step 1: Define the UserMarker component
   const UserMarker = ({ name }) => {

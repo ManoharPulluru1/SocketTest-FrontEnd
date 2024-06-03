@@ -23,8 +23,6 @@ const App = () => {
     };
   }, []);
 
-
-
   const handleInputChange = (e) => {
     setUsername(e.target.value);
   };
@@ -36,32 +34,37 @@ const App = () => {
 
   const handleButtonClick = () => {
     setIsUserAdded(true);
-    if (userLocation) {
-      if (username.trim()) {
-        socket.emit("addUser", { username, lat: userLocation[1], lng: userLocation[0] });
-        setUsername("");
-      }
+    if (userLocation && username.trim()) {
+      socket.emit("addUser", { username, lat: userLocation[1], lng: userLocation[0] });
+      setUsername("");
     }
   };
+
+  useEffect(() => {
+    if (isUserAdded && userLocation) {
+      const user = users.find((user) => user.name === username);
+      if (user) {
+        socket.emit("updateUserLocation", user.index, userLocation[1], userLocation[0]);
+      }
+    }
+  }, [userLocation]);
 
   return (
     <div className="AppMain">
       <div className="functionalities">
-        {isUserAdded ? (
-          <></>
-        ) : (
+        {!isUserAdded ? (
           <>
             <input type="text" value={username} onChange={handleInputChange} placeholder="Enter username" />
             <button onClick={handleButtonClick}>Add User</button>
           </>
-        )}
+        ) : null}
 
         {users.length > 0 && (
           <>
             <h2>Users</h2>
             <ul>
               {users.map((user) => (
-                <User key={user.index} user={user} userLocation={userLocation ? userLocation : null} />
+                <User key={user.index} user={user} />
               ))}
             </ul>
           </>
@@ -77,11 +80,8 @@ const App = () => {
               <button onClick={handleReset}>Reset Users</button>
             </div>
           </div>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </div>
-
       <MapBoxV1 setUserLocation={setUserLocation} users={users} />
     </div>
   );

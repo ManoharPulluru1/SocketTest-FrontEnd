@@ -31,6 +31,7 @@ const App = () => {
 
   const handleReset = () => {
     socket.emit("resetUsers");
+    setIsUserAdded(false);
   };
 
   const handleButtonClick = () => {

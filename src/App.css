@@ -21,11 +21,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  
 }
 
 .functionalities {
   z-index: 10;
   position: absolute;
+  font-size: 10px;
+  padding: 10px;
 }
 
 
@@ -70,4 +73,6 @@
   display: flex;
   justify-content: right;
   padding: 10px;
+  font-size: 10px;
+
 }

@@ -16,7 +16,7 @@ const User = ({ user }) => {
 
   useEffect(()=>{
     socket.emit("updateUserLocation", index, lat, lng)
-  },[user])
+  },[lat,lng])
 
   const triggerUpdate = () => {
     if (newMessage === "") return;

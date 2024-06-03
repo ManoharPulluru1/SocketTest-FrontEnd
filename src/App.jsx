@@ -23,14 +23,7 @@ const App = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (userLocation) {
-      const userIndex = users.findIndex(user => user.username === username);
-      if (userIndex !== -1) {
-        socket.emit("updateUserLocation", userIndex, userLocation[1], userLocation[0]);
-      }
-    }
-  }, [userLocation, username, users]);
+
 
   const handleInputChange = (e) => {
     setUsername(e.target.value);

@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import io from "socket.io-client";
 import { port } from "./port";
 
 const socket = io(port); 
 
-const User = ({ user, useLocation }) => {
+const User = ({ user }) => {
   const { name, index, lat, lng } = user;
   const [updatedMessage, setUpdatedMessage] = useState("");
   const [newMessage, setNewMessage] = useState("");
@@ -14,6 +14,10 @@ const User = ({ user, useLocation }) => {
     setNewMessage(e.target.value);
   };
 
+  useEffect(()=>{
+    socket.emit("updateUserLocation", index, lat, lng)
+  },[user])
+
   const triggerUpdate = () => {
     if (newMessage === "") return;
     console.log("triggerUpdate", index, newMessage);
@@ -21,7 +25,6 @@ const User = ({ user, useLocation }) => {
     setUpdatedMessage(newMessage);
     setNewMessage("");
   };
-
   return (
     <div>
       {name} : {index} : {lat} : {lng} 

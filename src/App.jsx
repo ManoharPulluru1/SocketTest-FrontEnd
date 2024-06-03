@@ -12,16 +12,26 @@ const App = () => {
   const [users, setUsers] = useState([]);
   const [isUserAdded, setIsUserAdded] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  const [userIndex, setUserIndex] = useState(null);
 
   useEffect(() => {
-    socket.on("users", (data) => {
+    const handleUsersUpdate = (data) => {
       setUsers(data);
-    });
+    };
+
+    socket.on("users", handleUsersUpdate);
 
     return () => {
-      socket.off("users");
+      socket.off("users", handleUsersUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    if(userIndex){
+      socket.emit("updateUserLocation", userIndex, userLocation[1], userLocation[0]);
+    }
+  }, [userLocation]);
+
 
   const handleInputChange = (e) => {
     setUsername(e.target.value);
@@ -34,9 +44,11 @@ const App = () => {
 
   const handleButtonClick = () => {
     if (userLocation && username.trim()) {
-      socket.emit("addUser", { username, lat: userLocation[1], lng: userLocation[0] });
+      const newUserIndex = users.length; // Calculate the new user's index based on the length of the users array
+      socket.emit("addUser", { username, lat: userLocation[1], lng: userLocation[0], index: newUserIndex });
       setUsername("");
       setIsUserAdded(true);
+      setUserIndex(newUserIndex); // Set the userIndex state to the new user's index
     }
   };
 
@@ -81,6 +93,7 @@ const App = () => {
               <h2>User Location</h2>
               <p>Latitude: {userLocation[1]}</p>
               <p>Longitude: {userLocation[0]}</p>
+              <p>User index: {userIndex !== null ? userIndex : "Not available"}</p>
               <button onClick={handleReset}>Reset Users</button>
             </div>
           </div>

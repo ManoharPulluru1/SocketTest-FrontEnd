@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import React from "react";
+import React, { useEffect } from "react";
 import io from "socket.io-client";
 import { port } from "./port";
 
@@ -10,7 +9,7 @@ const User = ({ user }) => {
 
   useEffect(() => {
     socket.emit("updateUserLocation", index, lat, lng);
-  }, [lat, lng]);
+  }, [lat, lng, index]);
 
   return (
     <div>

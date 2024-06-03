@@ -33,21 +33,25 @@ const App = () => {
   };
 
   const handleButtonClick = () => {
-    setIsUserAdded(true);
     if (userLocation && username.trim()) {
       socket.emit("addUser", { username, lat: userLocation[1], lng: userLocation[0] });
       setUsername("");
+      setIsUserAdded(true);
     }
   };
 
   useEffect(() => {
     if (isUserAdded && userLocation) {
-      const user = users.find((user) => user.name === username);
-      if (user) {
-        socket.emit("updateUserLocation", user.index, userLocation[1], userLocation[0]);
+      const userIndex = users.findIndex((user) => user.name === username);
+      if (userIndex !== -1) {
+        const updatedUsers = [...users];
+        updatedUsers[userIndex].lat = userLocation[1];
+        updatedUsers[userIndex].lng = userLocation[0];
+        setUsers(updatedUsers);
+        socket.emit("updateUserLocation", updatedUsers[userIndex].index, userLocation[1], userLocation[0]);
       }
     }
-  }, [userLocation]);
+  }, [userLocation, isUserAdded, users, username]);
 
   return (
     <div className="AppMain">

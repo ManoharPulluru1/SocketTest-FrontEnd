@@ -37,7 +37,7 @@ const App = () => {
       ) : (
         <div className="mapboxParent">
           <div className="yourDetailsCard">
-            <UserDetailsCard userLocation={userLocation} />
+            <UserDetailsCard setUserLocation={setUserLocation} userLocation={userLocation} />
           </div>
           <MapBox setUserLocation={setUserLocation} />
         </div>

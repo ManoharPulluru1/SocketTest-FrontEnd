@@ -36,3 +36,14 @@
   font-size: 10px;
   background-color: white;
 }
+
+.userListParent {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20%;
+  height: 100%;
+  background-color: rgb(109, 54, 54);
+  z-index: 10000;
+  color: white;
+}

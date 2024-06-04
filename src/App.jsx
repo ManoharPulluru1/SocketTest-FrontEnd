@@ -5,6 +5,7 @@ import "./App.css";
 import MapBox from "./Components/MapBox/MapBox";
 import { port } from "./port";
 import UserDetailsCard from "./Components/UserDetailsCard/UserDetailsCard";
+import UsersList from "./Components/UsersList/UsersList";
 
 const socket = io(port);
 
@@ -19,7 +20,6 @@ const App = () => {
     }
   }, []);
 
-  
   useEffect(() => {
     console.log("User location updated:", userLocation);
   }, [userLocation]);
@@ -38,6 +38,9 @@ const App = () => {
         <div className="mapboxParent">
           <div className="yourDetailsCard">
             <UserDetailsCard setUserLocation={setUserLocation} userLocation={userLocation} />
+          </div>
+          <div className="userListParent">
+            <UsersList />
           </div>
           <MapBox setUserLocation={setUserLocation} />
         </div>

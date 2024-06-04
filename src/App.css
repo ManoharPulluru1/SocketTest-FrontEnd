@@ -3,76 +3,27 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  font-family: sans-serif;
 }
 
 .appMain {
   height: 100vh;
   width: 100vw;
-  /* background-color: white; */
   position: relative;
   overflow: hidden;
-}
-
-.AddUserDiv {
-  height: 100px;
-  width: 300px;
-  border: 1px solid black;
-  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.192);
   display: flex;
   align-items: center;
   justify-content: center;
-  
 }
 
-.functionalities {
-  z-index: 10;
-  position: absolute;
-  font-size: 10px;
-  padding: 10px;
+.LoginCardParent {
+  height: 40%;
+  aspect-ratio: 1;
 }
 
-
-.markerPng {
-  width: 20px;
-  position: absolute;
-  height: 20px;
-  animation: blinker 1.5s linear infinite;
-}
-
-@keyframes blinker {
-  50% {
-    opacity: 0;
-  }
-}
-
-.user-marker {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  position: relative;
-}
-
-.markerTitle {
+.mapboxParent {
   height: 100%;
   width: 100%;
-  position: absolute;
-  top: -100%;
-  color: blue;
-  text-shadow: 0px 0px 1px black;
-  font-size: 16px;
-  white-space: nowrap;
-}
-
-.userCard {
-  height: 100px;
-  width: 100%;
-  background-color: white;  
-  /* z-index: 100; */
-  z-index: 1;
-  color: rgb(0, 0, 0);
-  display: flex;
-  justify-content: right;
-  padding: 10px;
-  font-size: 10px;
-
+  position: relative;
 }

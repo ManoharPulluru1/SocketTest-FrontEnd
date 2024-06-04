@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './LoginCard.css';
 import io from "socket.io-client";
+import { port } from '../../port';
 
-const socket = io("http://localhost:4000");
+const socket = io(port);
 
 const LoginCard = ({setIsLoggedIn,isLoggedIn}) => {
   const [userName, setUserName] = useState('');

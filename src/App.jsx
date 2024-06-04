@@ -3,8 +3,9 @@ import io from "socket.io-client";
 import LoginCard from "./Components/LoginCard/LoginCard";
 import "./App.css";
 import MapBox from "./Components/MapBox/MapBox";
+import { port } from "./port";
 
-const socket = io("http://localhost:4000");
+const socket = io(port);
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

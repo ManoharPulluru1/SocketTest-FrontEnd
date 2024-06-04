@@ -4,7 +4,6 @@ import { port } from '../../port';
 const socket = io(port);
 
 const UsersList = ({users}) => {
-    // const [users, setUsers] = useState([]);
 
 
     return (

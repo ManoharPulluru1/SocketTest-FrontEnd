@@ -12,6 +12,20 @@ const socket = io(port);
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 });
+  const [users, setUsers] = useState([]);
+
+  
+  useEffect(() => {
+    const handleUsersUpdate = (users) => {
+        setUsers(users);
+    };
+
+    socket.on('users', handleUsersUpdate);
+
+    return () => {
+        socket.off('users', handleUsersUpdate);
+    };
+}, []);
 
   useEffect(() => {
     const liveTracking = localStorage.getItem("liveTracking");
@@ -40,9 +54,9 @@ const App = () => {
             <UserDetailsCard setUserLocation={setUserLocation} userLocation={userLocation} />
           </div>
           <div className="userListParent">
-            <UsersList />
+            <UsersList  users={users}  />
           </div>
-          <MapBox setUserLocation={setUserLocation} />
+          <MapBox users={users} setUserLocation={setUserLocation} />
         </div>
       )}
     </div>

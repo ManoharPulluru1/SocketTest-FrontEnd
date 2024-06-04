@@ -1,27 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import io from "socket.io-client";
-import { port } from '../../port'; // Ensure this is the correct path to your port configuration
-
+import { port } from '../../port'; 
 const socket = io(port);
 
-const UsersList = () => {
-    const [users, setUsers] = useState([]);
+const UsersList = ({users}) => {
+    // const [users, setUsers] = useState([]);
 
-    useEffect(() => {
-        const handleUsersUpdate = (users) => {
-            setUsers(users);
-        };
-
-        socket.on('users', handleUsersUpdate);
-
-        return () => {
-            socket.off('users', handleUsersUpdate);
-        };
-    }, []);
 
     return (
         <div>
-            {users.map((user, index) => (
+            {users?.map((user, index) => (
                 <div key={index}>
                     <div>Name: {user.userName}</div>
                     <div>lat: {user.lat}</div>

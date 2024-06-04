@@ -14,7 +14,7 @@ const LoginCard = ({ setIsLoggedIn }) => {
 
     socket.emit('checkExistingUser', mobile);
 
-    socket.once('existingUser', (exists) => { // Use `once` to avoid multiple event triggers
+    socket.on('existingUser', (exists) => { // Use `once` to avoid multiple event triggers
       if (!exists) {
         localStorage.setItem('liveTracking', mobile);
         socket.emit('addAnUser', { userName, mobile });

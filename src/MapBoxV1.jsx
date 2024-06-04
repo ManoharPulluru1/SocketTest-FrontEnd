@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import mapboxgl from "mapbox-gl";
 import "./MapBoxV1.css"; // Import the CSS for the blinking marker
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -10,6 +10,7 @@ mapboxgl.accessToken = "pk.eyJ1IjoibWFub2hhcnB1bGx1cnUiLCJhIjoiY2xyeHB2cWl0MWFkc
 const MapBoxV1 = ({ setUserLocation, users }) => {
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
+  const markersRef = useRef([]);
 
   // Step 1: Define the UserMarker component
   const UserMarker = ({ name }) => {
@@ -63,9 +64,11 @@ const MapBoxV1 = ({ setUserLocation, users }) => {
       // Add user markers
       users.forEach((user) => {
         const markerEl = document.createElement("div");
-        ReactDOM.render(<UserMarker name={user.name} />, markerEl);
+        const root = createRoot(markerEl);
+        root.render(<UserMarker name={user.name} />);
 
-        new mapboxgl.Marker(markerEl).setLngLat([user.lng, user.lat]).addTo(mapInstance);
+        const marker = new mapboxgl.Marker(markerEl).setLngLat([user.lng, user.lat]).addTo(mapInstance);
+        markersRef.current.push(marker);
       });
 
       // Update markers when users state changes
@@ -83,13 +86,18 @@ const MapBoxV1 = ({ setUserLocation, users }) => {
 
   useEffect(() => {
     if (map) {
-      document.querySelectorAll(".user-marker").forEach((marker) => marker.remove());
+      // Remove existing markers
+      markersRef.current.forEach((marker) => marker.remove());
+      markersRef.current = [];
 
+      // Add new markers
       users.forEach((user) => {
         const markerEl = document.createElement("div");
-        ReactDOM.render(<UserMarker name={user.name} />, markerEl);
+        const root = createRoot(markerEl);
+        root.render(<UserMarker name={user.name} />);
 
-        new mapboxgl.Marker(markerEl).setLngLat([user.lng, user.lat]).addTo(map);
+        const marker = new mapboxgl.Marker(markerEl).setLngLat([user.lng, user.lat]).addTo(map);
+        markersRef.current.push(marker);
       });
     }
   }, [users, map]);

@@ -22,7 +22,7 @@
 }
 
 .blinking-marker {
-  background-color: red;
+  /* background-color: red; */
   border-radius: 50%;
   width: 10px;
   height: 10px;

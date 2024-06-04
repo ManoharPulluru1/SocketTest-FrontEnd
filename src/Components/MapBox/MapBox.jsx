@@ -35,7 +35,7 @@ const MapBox = ({setUserLocation}) => {
     geolocate.on("geolocate", (position) => {
       const { latitude, longitude } = position.coords;
       setUserLocation({ lat: latitude, lng: longitude });
-      mapInstance.flyTo({ center: [longitude, latitude] });
+      mapInstance.flyTo({ center: [longitude, latitude] , zoom : 14 });
     });
 
     setMap(mapInstance);

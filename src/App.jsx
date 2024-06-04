@@ -4,6 +4,7 @@ import LoginCard from "./Components/LoginCard/LoginCard";
 import "./App.css";
 import MapBox from "./Components/MapBox/MapBox";
 import { port } from "./port";
+import UserDetailsCard from "./Components/UserDetailsCard/UserDetailsCard";
 
 const socket = io(port);
 
@@ -35,6 +36,9 @@ const App = () => {
         </div>
       ) : (
         <div className="mapboxParent">
+          <div className="yourDetailsCard">
+            <UserDetailsCard userLocation={userLocation} />
+          </div>
           <MapBox setUserLocation={setUserLocation} />
         </div>
       )}

@@ -27,3 +27,12 @@
   width: 100%;
   position: relative;
 }
+
+.yourDetailsCard {
+  z-index: 10000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 10px;
+  background-color: white;
+}

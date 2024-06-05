@@ -13,6 +13,9 @@ const App = () => {
   const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 });
   const [users, setUsers] = useState([]);
   const [changeCount, setChangeCount] = useState(0);
+  const [flag,setFlag] = useState(false);
+  const [lng, setLng] = useState(0);
+  const [lat, setLat] = useState(0);
 
   const triggerReset = () => {
     localStorage.removeItem("liveTracking");
@@ -29,6 +32,20 @@ const App = () => {
     }
   }, []);
 
+  const currentUser = (lat,lng) => {
+    setFlag(true);
+    setLat(lat)
+    setLng(lng)
+    // setFlag(false);
+    setTimeout(() => {  
+      setFlag(false);
+    }, 100);
+  }
+
+  const triggerDeleteUser = (mobile) => {
+    socket.emit("deleteUser", mobile);
+  }
+
   useEffect(() => {
     console.log(isLoggedIn, 999);
   }, [isLoggedIn]);
@@ -44,20 +61,22 @@ const App = () => {
           <div className="yourDetailsCard">
             <UserDetailsCard changeCount={changeCount} setChangeCount={setChangeCount} userLocation={userLocation} />
           </div>
-          <MapBox userLocation={userLocation} setUserLocation={setUserLocation} />
+          <MapBox lat={lat} lng={lng} flag={flag} userLocation={userLocation} setUserLocation={setUserLocation} />
         </div>
       )}
       <button onClick={triggerReset} className="resetButton">
-        Reset
+        Log out
       </button>
       <div className="changeCountDiv">{changeCount}</div>
       <div className="allUsersDiv">
         {
           users.map((user, index) => (
-            <div key={index}>
-              <div>Name: {user.userName}</div>
-              <div>lat: {user.lat}</div>
-              <div>lng: {user.lng}</div>
+            <div className="userDiv" key={index}>
+              <div className="listUN">{user.userName}</div>
+              <div className="buttons">
+              <div onClick={()=>currentUser(user.lat,user.lng)} className="listDel">Center</div>
+              <div onClick={()=>triggerDeleteUser(user.mobile)} className="listDel">Delete</div>
+              </div>
             </div>
           ))
         }

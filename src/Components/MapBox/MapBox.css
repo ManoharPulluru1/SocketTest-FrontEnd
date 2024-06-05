@@ -36,9 +36,34 @@
   
 }
 
-.testHello {
+
+
+.marker {
+  height: 30px;
+  width: 30px;
+}
+
+.usernameMarkerImg {
+  height: 100%;
+  width: 100%;
   position: absolute;
-  left: 50%;
-  top: 20%;
-  z-index: 10000;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  animation: blink 1s ease-in-out infinite;
+}
+
+.usernameMarker {
+  position: absolute;
+  bottom: -50%;
+  white-space: nowrap;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }

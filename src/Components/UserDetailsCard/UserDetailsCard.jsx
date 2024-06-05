@@ -22,9 +22,9 @@ const UserDetailsCard = ({ userLocation, setChangeCount, changeCount }) => {
 
   return (
     <div className="UserDetailsCardMain">
-      <div>Name: {userName}</div>
-      <div>User Lat: {userLocation.lat}</div>
-      <div>User Lng: {userLocation.lng}</div>
+      <div className="currentUserName">Name: {userName}</div>
+      <div className="currentLat">User Lat: {userLocation.lat}</div>
+      <div className="currentLng">User Lng: {userLocation.lng}</div>
     </div>
   );
 };

@@ -27,6 +27,14 @@ const App = () => {
     socket.on("users", (users) => {
       setUsers(users);
     });
+
+    socket.emit("checkExistingUser", liveTracking);
+    socket.on("existingUser", (exists) => {
+      if (!exists) {
+        localStorage.removeItem("liveTracking");
+        setIsLoggedIn(false);
+      }
+    });
     if (liveTracking && liveTracking.length > 1) {
       setIsLoggedIn(true);
     }

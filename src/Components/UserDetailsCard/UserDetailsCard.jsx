@@ -5,7 +5,7 @@ import { port } from "../../port";
 
 const socket = io(port);
 
-const UserDetailsCard = ({ userLocation, setUserLocation }) => {
+const UserDetailsCard = ({ userLocation, setChangeCount, changeCount }) => {
   const [mobile, setMobile] = useState(localStorage.getItem("liveTracking"));
   const [userName, setUserName] = useState("");
 
@@ -17,10 +17,7 @@ const UserDetailsCard = ({ userLocation, setUserLocation }) => {
   }, []);
 
   useEffect(() => {
-    socket.emit("updateUserLocation", { userLocation, mobile });
-    socket.on("userLocation", ({ mobile, userLocation }) => {
-      setUserLocation(userLocation);
-    });
+    setChangeCount(changeCount+1)
   }, [userLocation.lat, userLocation.lng]);
 
   return (

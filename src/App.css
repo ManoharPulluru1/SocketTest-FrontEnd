@@ -57,3 +57,16 @@
   z-index: 10000;
   font-size: 12px;
 }
+
+.changeCountDiv {
+  position: absolute;
+  right: 10px;
+  background-color: gray;
+ color: white; 
+ border-radius: 10px;
+  bottom: 50px;
+  width: fit-content;
+  padding: 10px 20px;
+  z-index: 10000;
+  font-size: 12px;
+}

@@ -47,3 +47,13 @@
   z-index: 10000;
   color: white;
 }
+
+.resetButton {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: fit-content;
+  padding: 10px 20px;
+  z-index: 10000;
+  font-size: 12px;
+}

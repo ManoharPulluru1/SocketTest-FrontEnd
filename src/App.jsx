@@ -13,6 +13,11 @@ const App = () => {
   const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 });
   const [users, setUsers] = useState([]);
 
+  const triggerReset = () => {
+    localStorage.removeItem("liveTracking");
+    setIsLoggedIn(false);
+  }
+
   
 
   useEffect(() => {
@@ -20,7 +25,7 @@ const App = () => {
     socket.on("users", (users) => {
       setUsers(users);
     });
-    if ( liveTracking.length > 1) {
+    if ( liveTracking && liveTracking.length > 1) {
       setIsLoggedIn(true);
     }
   }, []);
@@ -47,6 +52,9 @@ const App = () => {
           <MapBox setUserLocation={setUserLocation} />
         </div>
       )}
+      <button onClick={triggerReset} className="resetButton">
+        Reset
+      </button>
     </div>
   );
 };

@@ -45,7 +45,7 @@ const MapBox = ({ setUserLocation,flag, userLocation, lat, lng }) => {
       },
       trackUserLocation: true,
       showUserHeading: true,
-      fitBoundsOptions: { maxZoom: 14 },
+      fitBoundsOptions: { maxZoom: 18 },
     });
 
     mapInstance.addControl(geolocate);
@@ -96,7 +96,7 @@ const MapBox = ({ setUserLocation,flag, userLocation, lat, lng }) => {
 
   const handleUserCenter = (lat,lng)=>{
     if (map) {
-      map.flyTo({ center: [lng, lat], zoom: 14 });
+      map.flyTo({ center: [lng, lat], zoom: 18 });
     }
   }
 

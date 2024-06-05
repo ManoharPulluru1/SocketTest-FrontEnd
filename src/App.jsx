@@ -13,7 +13,7 @@ const App = () => {
   const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 });
   const [users, setUsers] = useState([]);
   const [changeCount, setChangeCount] = useState(0);
-  const [flag,setFlag] = useState(false);
+  const [flag, setFlag] = useState(false);
   const [lng, setLng] = useState(0);
   const [lat, setLat] = useState(0);
 
@@ -32,19 +32,19 @@ const App = () => {
     }
   }, []);
 
-  const currentUser = (lat,lng) => {
+  const currentUser = (lat, lng) => {
     setFlag(true);
-    setLat(lat)
-    setLng(lng)
+    setLat(lat);
+    setLng(lng);
     // setFlag(false);
-    setTimeout(() => {  
+    setTimeout(() => {
       setFlag(false);
     }, 100);
-  }
+  };
 
   const triggerDeleteUser = (mobile) => {
     socket.emit("deleteUser", mobile);
-  }
+  };
 
   useEffect(() => {
     console.log(isLoggedIn, 999);
@@ -57,30 +57,34 @@ const App = () => {
           <LoginCard setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
         </div>
       ) : (
-        <div className="mapboxParent">
-          <div className="yourDetailsCard">
-            <UserDetailsCard changeCount={changeCount} setChangeCount={setChangeCount} userLocation={userLocation} />
+        <>
+          <div className="mapboxParent">
+            <div className="yourDetailsCard">
+              <UserDetailsCard changeCount={changeCount} setChangeCount={setChangeCount} userLocation={userLocation} />
+            </div>
+            <MapBox lat={lat} lng={lng} flag={flag} userLocation={userLocation} setUserLocation={setUserLocation} />
           </div>
-          <MapBox lat={lat} lng={lng} flag={flag} userLocation={userLocation} setUserLocation={setUserLocation} />
-        </div>
+          <div className="allUsersDiv">
+            {users.map((user, index) => (
+              <div className="userDiv" key={index}>
+                <div className="listUN">{user.userName}</div>
+                <div className="buttons">
+                  <div onClick={() => currentUser(user.lat, user.lng)} className="listDel">
+                    Center
+                  </div>
+                  <div onClick={() => triggerDeleteUser(user.mobile)} className="listDel">
+                    Delete
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
       <button onClick={triggerReset} className="resetButton">
         Log out
       </button>
       <div className="changeCountDiv">{changeCount}</div>
-      <div className="allUsersDiv">
-        {
-          users.map((user, index) => (
-            <div className="userDiv" key={index}>
-              <div className="listUN">{user.userName}</div>
-              <div className="buttons">
-              <div onClick={()=>currentUser(user.lat,user.lng)} className="listDel">Center</div>
-              <div onClick={()=>triggerDeleteUser(user.mobile)} className="listDel">Delete</div>
-              </div>
-            </div>
-          ))
-        }
-      </div>
     </div>
   );
 };

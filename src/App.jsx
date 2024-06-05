@@ -30,10 +30,6 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    console.log("User location updated:", userLocation);
-  }, [userLocation]);
-
-  useEffect(() => {
     console.log(isLoggedIn, 999);
   }, [isLoggedIn]);
 
@@ -55,6 +51,17 @@ const App = () => {
         Reset
       </button>
       <div className="changeCountDiv">{changeCount}</div>
+      <div className="allUsersDiv">
+        {
+          users.map((user, index) => (
+            <div key={index}>
+              <div>Name: {user.userName}</div>
+              <div>lat: {user.lat}</div>
+              <div>lng: {user.lng}</div>
+            </div>
+          ))
+        }
+      </div>
     </div>
   );
 };

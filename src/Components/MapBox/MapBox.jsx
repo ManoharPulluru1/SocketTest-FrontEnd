@@ -2,6 +2,10 @@ import mapboxgl from "mapbox-gl";
 import React, { useEffect, useRef, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./MapBox.css";
+import io from "socket.io-client";
+import { port } from "../../port";
+
+const socket = io(port);
 
 mapboxgl.accessToken = "pk.eyJ1IjoibWFub2hhcnB1bGx1cnUiLCJhIjoiY2xyeHB2cWl0MWFkcjJpbmFuYXkyOTZzaCJ9.AUGHU42YHgAPtHjDzdhZ7g";
 
@@ -9,6 +13,7 @@ const MapBox = ({ setUserLocation, userLocation }) => {
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
   const [initialLoad, setInitialLoad] = useState(true);
+  const [mobile, setMobile] = useState(localStorage.getItem("liveTracking"));
 
   useEffect(() => {
     const mapInstance = new mapboxgl.Map({
@@ -36,6 +41,7 @@ const MapBox = ({ setUserLocation, userLocation }) => {
     geolocate.on("geolocate", (position) => {
       const { latitude, longitude } = position.coords;
       setUserLocation({ lat: latitude, lng: longitude });
+      socket.emit("updateUserLocation", { lat: latitude, lng: longitude, mobile });
       if (initialLoad) {
         mapInstance.flyTo({ center: [longitude, latitude], zoom: 14 });
         setInitialLoad(false);

@@ -8,6 +8,7 @@ mapboxgl.accessToken = "pk.eyJ1IjoibWFub2hhcnB1bGx1cnUiLCJhIjoiY2xyeHB2cWl0MWFkc
 const MapBox = ({ setUserLocation, userLocation }) => {
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
+  const [hasGeolocated, setHasGeolocated] = useState(false);
 
   useEffect(() => {
     const mapInstance = new mapboxgl.Map({
@@ -33,15 +34,18 @@ const MapBox = ({ setUserLocation, userLocation }) => {
     });
 
     geolocate.on("geolocate", (position) => {
-      const { latitude, longitude } = position.coords;
-      setUserLocation({ lat: latitude, lng: longitude });
-      mapInstance.flyTo({ center: [longitude, latitude], zoom: 14 });
+      if (!hasGeolocated) {
+        const { latitude, longitude } = position.coords;
+        setUserLocation({ lat: latitude, lng: longitude });
+        mapInstance.flyTo({ center: [longitude, latitude], zoom: 14 });
+        setHasGeolocated(true);  // Update the state to prevent further updates
+      }
     });
 
     setMap(mapInstance);
 
     return () => mapInstance.remove();
-  }, []);
+  }, [hasGeolocated]);
 
   return (
     <div className="mapBoxParent">

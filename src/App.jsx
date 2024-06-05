@@ -5,7 +5,6 @@ import "./App.css";
 import MapBox from "./Components/MapBox/MapBox";
 import { port } from "./port";
 import UserDetailsCard from "./Components/UserDetailsCard/UserDetailsCard";
-import UsersList from "./Components/UsersList/UsersList";
 
 const socket = io(port);
 
@@ -15,21 +14,13 @@ const App = () => {
   const [users, setUsers] = useState([]);
 
   
-  useEffect(() => {
-    const handleUsersUpdate = (users) => {
-        setUsers(users);
-    };
-
-    socket.on('users', handleUsersUpdate);
-
-    return () => {
-        socket.off('users', handleUsersUpdate);
-    };
-}, []);
 
   useEffect(() => {
     const liveTracking = localStorage.getItem("liveTracking");
-    if (liveTracking && liveTracking.length > 1) {
+    socket.on("users", (users) => {
+      setUsers(users);
+    });
+    if ( liveTracking.length > 1) {
       setIsLoggedIn(true);
     }
   }, []);
@@ -53,10 +44,7 @@ const App = () => {
           <div className="yourDetailsCard">
             <UserDetailsCard setUserLocation={setUserLocation} userLocation={userLocation} />
           </div>
-          <div className="userListParent">
-            <UsersList  users={users}  />
-          </div>
-          <MapBox users={users} setUserLocation={setUserLocation} />
+          <MapBox setUserLocation={setUserLocation} />
         </div>
       )}
     </div>

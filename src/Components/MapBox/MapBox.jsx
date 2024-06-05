@@ -5,7 +5,7 @@ import "./MapBox.css";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibWFub2hhcnB1bGx1cnUiLCJhIjoiY2xyeHB2cWl0MWFkcjJpbmFuYXkyOTZzaCJ9.AUGHU42YHgAPtHjDzdhZ7g";
 
-const MapBox = ({setUserLocation}) => {
+const MapBox = ({ setUserLocation, userLocation }) => {
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
 
@@ -35,7 +35,7 @@ const MapBox = ({setUserLocation}) => {
     geolocate.on("geolocate", (position) => {
       const { latitude, longitude } = position.coords;
       setUserLocation({ lat: latitude, lng: longitude });
-      mapInstance.flyTo({ center: [longitude, latitude] , zoom : 14 });
+      mapInstance.flyTo({ center: [longitude, latitude], zoom: 14 });
     });
 
     setMap(mapInstance);
@@ -43,13 +43,14 @@ const MapBox = ({setUserLocation}) => {
     return () => mapInstance.remove();
   }, []);
 
-
   return (
-    <div
-      className="mapBoxMain"
-      style={{ height: "100vh", width: "100vw", position: "absolute", top: 0, left: 0 }}
-      ref={mapContainerRef}
-    ></div>
+    <div className="mapBoxParent">
+      <div className="testHello">
+        <div>Lat: {userLocation.lat}</div>
+        <div>Lng: {userLocation.lng}</div>
+      </div>
+      <div className="mapBoxMain" style={{ height: "100vh", width: "100vw", position: "absolute", top: 0, left: 0 }} ref={mapContainerRef}></div>
+    </div>
   );
 };
 

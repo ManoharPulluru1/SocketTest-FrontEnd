@@ -26,3 +26,19 @@
     top: 0;
     left: 0;
 }
+
+.mapBoxParent {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+}
+
+.testHello {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  z-index: 10000;
+}

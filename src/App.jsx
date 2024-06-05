@@ -12,21 +12,19 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 });
   const [users, setUsers] = useState([]);
-  const [changeCount,setChangeCount] = useState(0);
+  const [changeCount, setChangeCount] = useState(0);
 
   const triggerReset = () => {
     localStorage.removeItem("liveTracking");
     setIsLoggedIn(false);
-  }
-
-  
+  };
 
   useEffect(() => {
     const liveTracking = localStorage.getItem("liveTracking");
     socket.on("users", (users) => {
       setUsers(users);
     });
-    if ( liveTracking && liveTracking.length > 1) {
+    if (liveTracking && liveTracking.length > 1) {
       setIsLoggedIn(true);
     }
   }, []);
@@ -48,17 +46,15 @@ const App = () => {
       ) : (
         <div className="mapboxParent">
           <div className="yourDetailsCard">
-            <UserDetailsCard changeCount={changeCount} setChangeCount={setChangeCount}  userLocation={userLocation} />
+            <UserDetailsCard changeCount={changeCount} setChangeCount={setChangeCount} userLocation={userLocation} />
           </div>
-          <MapBox setUserLocation={setUserLocation} />
+          <MapBox userLocation={userLocation} setUserLocation={setUserLocation} />
         </div>
       )}
       <button onClick={triggerReset} className="resetButton">
         Reset
       </button>
-      <div className="changeCountDiv">
-        {changeCount}
-      </div>
+      <div className="changeCountDiv">{changeCount}</div>
     </div>
   );
 };

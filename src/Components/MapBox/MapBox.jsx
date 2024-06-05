@@ -8,7 +8,7 @@ mapboxgl.accessToken = "pk.eyJ1IjoibWFub2hhcnB1bGx1cnUiLCJhIjoiY2xyeHB2cWl0MWFkc
 const MapBox = ({ setUserLocation, userLocation }) => {
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
-  const [hasGeolocated, setHasGeolocated] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
     const mapInstance = new mapboxgl.Map({
@@ -34,24 +34,31 @@ const MapBox = ({ setUserLocation, userLocation }) => {
     });
 
     geolocate.on("geolocate", (position) => {
-      if (!hasGeolocated) {
-        const { latitude, longitude } = position.coords;
-        setUserLocation({ lat: latitude, lng: longitude });
+      const { latitude, longitude } = position.coords;
+      setUserLocation({ lat: latitude, lng: longitude });
+      if (initialLoad) {
         mapInstance.flyTo({ center: [longitude, latitude], zoom: 14 });
-        setHasGeolocated(true);  // Update the state to prevent further updates
+        setInitialLoad(false);
       }
     });
 
     setMap(mapInstance);
 
     return () => mapInstance.remove();
-  }, [hasGeolocated]);
+  }, [initialLoad, setUserLocation]);
+
+  const handleRecenter = () => {
+    if (map && userLocation.lat && userLocation.lng) {
+      map.flyTo({ center: [userLocation.lng, userLocation.lat], zoom: 14 });
+    }
+  };
 
   return (
     <div className="mapBoxParent">
       <div className="testHello">
         <div>Lat: {userLocation.lat}</div>
         <div>Lng: {userLocation.lng}</div>
+        <button onClick={handleRecenter}>Recenter</button>
       </div>
       <div className="mapBoxMain" style={{ height: "100vh", width: "100vw", position: "absolute", top: 0, left: 0 }} ref={mapContainerRef}></div>
     </div>
